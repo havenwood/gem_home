@@ -18,7 +18,12 @@ EOF
 			;;
 		-P|--pop)
 			PATH=":$PATH:"
-			GEM_PATH=":$GEM_PATH:"
+
+			if [[ -z "$2" || "$2" = "1" ]]; then
+				GEM_PATH=":$GEM_PATH:"
+			else
+				GEM_PATH=$(echo "$GEM_PATH" | cut -d ":" -f "-$(($2-1)),$(($2+1))-")
+			fi
 
 			if [[ -n "$GEM_HOME" ]]; then
 				PATH="${PATH//:$GEM_HOME\/bin:/:}"
@@ -31,12 +36,12 @@ EOF
 			;;
 		-h|--help)
 			cat <<USAGE
-usage: gem_path [--push DIR | --pop]
+usage: gem_path [--push DIR | --pop [INDEX]]
 
 Options:
 
 	-p, --push DIR	Sets \$GEM_HOME and pushes DIR onto \$GEM_PATH
-	-P, --pop	Pops the first directory off of \$GEM_PATH and
+	-P, --pop	[INDEX] Pops the first directory, or INDEX instead if provided, off of \$GEM_PATH and
 			resets \$GEM_HOME to the next directory.
 	-V, --version		Prints the version
 	-h, --help		Prints this message
@@ -52,9 +57,11 @@ USAGE
 			;;
 		"")
 			local gem_path="$GEM_PATH:"
+			local gem_path_count=1
 
 			until [[ -z "$gem_path" ]]; do
-				echo "  ${gem_path%%:*}"
+				echo "  $gem_path_count: ${gem_path%%:*}"
+			  let "gem_path_count++"
 				gem_path="${gem_path#*:}"
 			done
 			;;

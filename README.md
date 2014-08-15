@@ -19,10 +19,14 @@ Pushes a directory onto the front of `$GEM_PATH` and set `$GEM_HOME`:
 
     $ gem_path --push /path/to/.gem
 
-Pops a directory off of `$GEM_PATH` and resets `$GEM_HOME` to the next
+Pops a directory off of the front of `$GEM_PATH` and resets `$GEM_HOME` to the next
 directory:
 
     $ gem_path --pop
+
+Optionally pop a directory off of `$GEM_PATH` by its index:
+
+    $ gem_path --pop 2
 
 ## Install
 
@@ -34,7 +38,7 @@ directory:
 ### PGP
 
 All releases are [PGP] signed for security. Instructions on how to import my
-PGP key can be found on my [blog][1]. To verify that a release was not tampered 
+PGP key can be found on my [blog][1]. To verify that a release was not tampered
 with:
 
     wget https://raw.github.com/postmodern/gem_path/master/pkg/gem_path-0.0.1.tar.gz.asc
